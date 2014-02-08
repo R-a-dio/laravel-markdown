@@ -1,0 +1,26 @@
+{
+    "name": "hiro/laravel-markdown",
+    "description": "A *working* markdown renderer.",
+    "keywords": ["markdown", "laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Collinson",
+            "email": "hiroto@hiroto.eu",
+            "role": "Developer",
+            "homepage": "https://r-a-d.io"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ezyang/htmlpurifier": "4.6.0",
+        "michelf/php-markdown": "dev-lib",
+        "laravel/framework": "4.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "hiro": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
