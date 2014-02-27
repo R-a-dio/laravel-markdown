@@ -11,6 +11,7 @@ class MarkdownResolver {
 	protected $purifier;
 	protected $config;
 	protected $purifier_config;
+	protected $purifier_enabled;
 
 
 	// setup using injected config
@@ -23,8 +24,10 @@ class MarkdownResolver {
 			$this->instance = new Markdown;
 		}
 
+		$this->instance->camo_host = $config->get("radio.camo.host", "http://localhost:8081/");
+		$this->instance->camo_key = $config->get("radio.camo.key", "0x24FEEDFACEDEADBEEFCAFE");
 
-		$this->instance->empty_element_suffix = $config->get("markdown::empty");
+		$this->instance->empty_element_suffix = $config->get("markdown::empty", ">");
 		$this->instance->no_markup = $config->get("markdown::safe", false);
 
 		$this->purifier_config = new HTMLPurifier_Config::createDefault();
@@ -38,6 +41,7 @@ class MarkdownResolver {
 			$this->setPurifierConfig($namespace, $value);
 		}
 
+		$this->purifier_enabled = $config->get("markdown::purifier.enabled", false);
 		$this->purifier = new HTMLPurifier($this->purifier_config);
 
 	}
@@ -55,7 +59,7 @@ class MarkdownResolver {
 		return $text;
 	}
 
-
+	// change to no custom HTML allowed. 
 	public function setSafe($safe = true)
 	{
 		$this->instance->no_markup = $safe;
