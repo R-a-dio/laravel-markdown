@@ -30,7 +30,7 @@ class MarkdownResolver {
 		$this->instance->empty_element_suffix = $config->get("markdown::empty", ">");
 		$this->instance->no_markup = $config->get("markdown::safe", false);
 
-		$this->purifier_config = new HTMLPurifier_Config::createDefault();
+		$this->purifier_config = HTMLPurifier_Config::createDefault();
 		$this->purifier_config->set("Cache.DefinitionImpl", null);
 		$this->purifier_config->set("HTML.Doctype", $config->get("markdown::purifier.doctype", "HTML 4.01 Transitional"));
 
