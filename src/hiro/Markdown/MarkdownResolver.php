@@ -3,6 +3,7 @@
 use Michelf\Markdown;
 use Michelf\MarkdownExtra;
 use \HTMLPurifier; // piece of shit that doesnt know what autoloading is. Sadly, nothing better is available.
+use \HTMLPurifier_Config;
 use Illuminate\Config\Repository;
 
 class MarkdownResolver {
@@ -27,7 +28,7 @@ class MarkdownResolver {
 		$this->instance->camo_host = $config->get("radio.camo.host", "http://localhost:8081/");
 		$this->instance->camo_key = $config->get("radio.camo.key", "0x24FEEDFACEDEADBEEFCAFE");
 
-		$this->instance->empty_element_suffix = $config->get("markdown::empty", ">");
+		$this->instance->empty_element_suffix = ">";
 		$this->instance->no_markup = $config->get("markdown::safe", false);
 
 		$this->purifier_config = HTMLPurifier_Config::createDefault();
@@ -48,12 +49,20 @@ class MarkdownResolver {
 
 
 	// primary entry point
-	public function render($text, $purify = false)
+	public function render($text, $purify = false, $comment = false)
 	{
+		if ($comment) {
+			$text = $this->quotes($text);
+		}
+
 		$text = $this->instance->transform($text);
 
 		if ($purify or $this->purifier_enabled) {
 			$text = $this->purifier->purify($text);
+		}
+
+		if ($comment) {
+			$text = $this->links($text);
 		}
 
 		return $text;
@@ -95,5 +104,18 @@ class MarkdownResolver {
 		// regenerate HTMLPurifier since it's a piece of garbage
 		// and has no concept of standards (e.g. autoloading)
 		$this->purifier = new HTMLPurifier($this->purifier_config);
+	}
+
+	public function quotes($comment)
+	{
+		$comment = preg_replace("/>{2,}/", ">>", $comment);
+		$links = preg_replace("/>>(\d+)/", '&gt;&gt;$1', $comment);
+		return preg_replace("/^>([^>]+)$/m", '&gt;$1', $links);
+	}
+
+	public function links($comment)
+	{
+		$links = preg_replace("/&gt;&gt;(\d+)/", '<a href="#$1" class="comment-link">&gt;&gt;$1</a>', $comment);
+		return preg_replace("/^&gt;(.+)(<br>)?$/m", '<span class="text-success">&gt;$1</span>$2', $links);
 	}
 }
