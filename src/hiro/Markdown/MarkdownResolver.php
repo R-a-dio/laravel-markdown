@@ -18,7 +18,7 @@ class MarkdownResolver {
 	public function __construct(Repository $config)
 	{
 		// choosing the instance to use~
-		if ($config->get("markdown::extra", true) {
+		if ($config->get("markdown::extra", true)) {
 			$this->instance = new MarkdownExtra;
 		} else {
 			$this->instance = new Markdown;
