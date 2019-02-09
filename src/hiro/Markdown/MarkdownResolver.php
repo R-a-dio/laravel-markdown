@@ -25,9 +25,6 @@ class MarkdownResolver {
 			$this->instance = new Markdown;
 		}
 
-		$this->instance->camo_host = $config->get("radio.camo.host", "http://localhost:8081/");
-		$this->instance->camo_key = $config->get("radio.camo.key", "0x24FEEDFACEDEADBEEFCAFE");
-
 		$this->instance->empty_element_suffix = ">";
 		$this->instance->no_markup = $config->get("markdown::safe", false);
 

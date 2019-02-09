@@ -14,7 +14,7 @@
     "require": {
         "php": ">=5.4",
         "ezyang/htmlpurifier": "4.6.0",
-        "michelf/php-markdown": "dev-lib",
+        "michelf/php-markdown": "^1.8",
         "laravel/framework": "5.*"
     },
     "autoload": {
