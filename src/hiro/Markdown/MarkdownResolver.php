@@ -27,6 +27,7 @@ class MarkdownResolver {
 
 		$this->instance->empty_element_suffix = ">";
 		$this->instance->no_markup = $config->get("markdown::safe", false);
+		$this->instance->hard_wrap = true;
 
 		$this->purifier_config = HTMLPurifier_Config::createDefault();
 		$this->purifier_config->set("Cache.DefinitionImpl", null);
